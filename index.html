@@ -67,9 +67,9 @@
   <!-- Primeira imagem -->
   <img id="primeira" src="primeira_pagina.jpg" alt="Envelope - primeira página">
 
-  <!-- Vídeo de transição -->
-  <video id="transicao" playsinline muted>
-    <source src="transicao.mp4" type="video/mp4">
+  <!-- Vídeo de transição com áudio incluído -->
+  <video id="transicao" playsinline>
+    <source src="transicao_com_audio.mp4" type="video/mp4">
     Seu navegador não suporta vídeo.
   </video>
 
@@ -79,11 +79,6 @@
   <!-- Botão para iniciar o vídeo -->
   <button id="btnContinuar">Continuar para o convite</button>
 </div>
-
-<!-- Áudio do vídeo -->
-<audio id="audioVideo">
-  <source src="musica_fundo.mp3" type="audio/mpeg">
-</audio>
 
 <!-- Música da segunda página -->
 <audio id="musica" loop>
@@ -95,7 +90,6 @@ const primeira = document.getElementById("primeira");
 const segunda = document.getElementById("segunda");
 const transicao = document.getElementById("transicao");
 const btnContinuar = document.getElementById("btnContinuar");
-const audioVideo = document.getElementById("audioVideo");
 const musica = document.getElementById("musica");
 
 // Fade-in da primeira imagem
@@ -108,22 +102,12 @@ primeira.addEventListener("click", () => {
   btnContinuar.style.display = "block";
 });
 
-// Clique no botão → toca vídeo + áudio
+// Clique no botão → inicia vídeo
 btnContinuar.addEventListener("click", () => {
-  // Esconde o botão
   btnContinuar.style.display = "none";
-
-  // Oculta primeira imagem
   primeira.style.opacity = "0";
-
-  // Mostra e toca o vídeo
   transicao.classList.add("mostrar");
   transicao.play();
-
-  // Toca o áudio do vídeo
-  audioVideo.loop = false;
-  audioVideo.currentTime = 0;
-  audioVideo.play().catch(() => console.log("Áudio do vídeo bloqueado"));
 });
 
 // Quando o vídeo termina
@@ -132,10 +116,6 @@ transicao.onended = () => {
   transicao.style.opacity = "0";
   transicao.style.pointerEvents = "none";
   transicao.style.zIndex = "-1";
-
-  // Para áudio do vídeo
-  audioVideo.pause();
-  audioVideo.currentTime = 0;
 
   // Mostra segunda imagem
   segunda.classList.add("mostrar");
