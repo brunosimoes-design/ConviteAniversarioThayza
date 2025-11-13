@@ -5,21 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Convite Interativo</title>
   <style>
-    html, body {
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background: #000;
-      height: 100%;
+    }
+
+    body {
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       overflow: hidden;
     }
-    iframe {
+
+    .container {
+      position: relative;
       width: 100%;
-      height: 100%;
-      border: none;
+      max-width: 450px; /* largura máxima do convite */
+      height: auto;
+      overflow: hidden;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+      transition: opacity 1.5s ease;
+      cursor: pointer;
+    }
+
+    #segunda {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(1.02);
+    }
+
+    .mostrar {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transform: scale(1) !important;
+      transition: opacity 2s ease, transform 2s ease;
     }
   </style>
 </head>
 <body>
-  <iframe src="convite_interativo.pdf"></iframe>
+  <div class="container">
+    <img id="primeira" src="primeira_pagina.jpg" alt="Envelope - primeira página">
+    <img id="segunda" src="segunda_pagina.jpg" alt="Convite - segunda página">
+  </div>
+
+  <script>
+    const primeira = document.getElementById('primeira');
+    const segunda = document.getElementById('segunda');
+
+    // Efeito inicial de fade-in na primeira imagem
+    window.onload = () => {
+      primeira.style.opacity = '1';
+    };
+
+    // Ao clicar na primeira imagem, faz a transição
+    primeira.addEventListener('click', () => {
+      primeira.style.opacity = '0';
+      segunda.classList.add('mostrar');
+    });
+  </script>
 </body>
 </html>
