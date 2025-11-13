@@ -33,7 +33,7 @@
       height: 100%;
       display: block;
       border-radius: 8px;
-      object-fit: cover;  /* 🔥 faz o vídeo preencher toda a área */
+      object-fit: cover;
     }
 
     #segunda, #transicao {
@@ -66,7 +66,7 @@
   <div class="container">
     <img id="primeira" src="primeira_pagina.jpg" alt="Envelope - primeira página">
 
-    <video id="transicao" playsinline>
+    <video id="transicao" playsinline muted>
       <source src="transicao.mp4" type="video/mp4">
       Seu navegador não suporta vídeo.
     </video>
@@ -74,7 +74,8 @@
     <img id="segunda" src="segunda_pagina.jpg" alt="Convite - segunda página">
   </div>
 
-  <audio id="bg-music">
+  <!-- Música da segunda página -->
+  <audio id="bg-music" loop>
     <source src="musica_fundo.mp3" type="audio/mpeg">
   </audio>
 
@@ -89,19 +90,35 @@
     };
 
     primeira.addEventListener("click", () => {
+      // Fade-out da primeira imagem
       primeira.style.opacity = "0";
 
+      // Mostra o vídeo de transição
       transicao.classList.add("mostrar");
       transicao.play();
 
-      bgMusic.play().catch(() => {});
-
+      // Quando o vídeo terminar
       transicao.onended = () => {
-        transicao.classList.remove("mostrar");  
+        // Fade-out do vídeo
         transicao.style.opacity = "0";
         transicao.style.pointerEvents = "none";
-        transicao.style.zIndex = "-1";  /* 🔥 impede interferência total */
+
+        // Mostra a segunda imagem
         segunda.classList.add("mostrar");
+
+        // Toca a música da segunda página com fade-in
+        bgMusic.volume = 0;
+        bgMusic.play().then(() => {
+          let vol = 0;
+          const fadeIn = setInterval(() => {
+            if (vol < 0.4) {
+              vol += 0.02;
+              bgMusic.volume = vol;
+            } else {
+              clearInterval(fadeIn);
+            }
+          }, 200);
+        }).catch(err => console.log("Reprodução automática bloqueada:", err));
       };
     });
   </script>
