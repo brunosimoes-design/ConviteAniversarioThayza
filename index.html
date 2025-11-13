@@ -61,7 +61,7 @@
   <img id="segunda" src="segunda_pagina.jpg" alt="Convite - segunda página">
 </div>
 
-<!-- Áudio do vídeo -->
+<!-- Áudio que toca junto com o vídeo -->
 <audio id="audioVideo">
   <source src="musica_fundo.mp3" type="audio/mpeg">
 </audio>
@@ -90,7 +90,7 @@ primeira.addEventListener("click", () => {
   transicao.classList.add("mostrar");
   transicao.play();
 
-  // Toca o áudio do vídeo (uma vez só)
+  // Toca o áudio do vídeo ao mesmo tempo (uma vez só)
   audioVideo.loop = false;
   audioVideo.currentTime = 0;
   audioVideo.play().catch(() => console.log("Áudio do vídeo bloqueado"));
