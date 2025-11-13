@@ -57,12 +57,28 @@
     audio {
       display: none;
     }
+
+    /* Vídeo ocupando o mesmo espaço das imagens */
+    #transicao {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      border-radius: 8px;
+      display: none;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <img id="primeira" src="primeira_pagina.jpg" alt="Envelope - primeira página">
     <img id="segunda" src="segunda_pagina.jpg" alt="Convite - segunda página">
+
+    <!-- Vídeo de transição -->
+    <video id="transicao" muted>
+      <source src="transicao.mp4" type="video/mp4">
+      Seu navegador não suporta vídeos.
+    </video>
   </div>
 
   <!-- Música de fundo -->
@@ -74,6 +90,7 @@
   <script>
     const primeira = document.getElementById('primeira');
     const segunda = document.getElementById('segunda');
+    const transicao = document.getElementById('transicao');
     const musica = document.getElementById('musica');
 
     // Fade-in inicial da primeira imagem
@@ -83,25 +100,34 @@
 
     // Quando clicar no envelope (primeira imagem)
     primeira.addEventListener('click', () => {
+      // Some a primeira imagem
       primeira.style.opacity = '0';
-      segunda.classList.add('mostrar');
 
-      // Tenta tocar a música (autorizado após clique no celular)
-      musica.play().then(() => {
-        // Efeito de fade-in no volume
-        musica.volume = 0;
-        let vol = 0;
-        const fadeIn = setInterval(() => {
-          if (vol < 0.4) {
-            vol += 0.02;
-            musica.volume = vol;
-          } else {
-            clearInterval(fadeIn);
-          }
-        }, 200);
-      }).catch((err) => {
-        console.log('Reprodução automática bloqueada:', err);
-      });
+      // Exibe o vídeo e reproduz
+      transicao.style.display = 'block';
+      transicao.play();
+
+      // Quando o vídeo terminar → aparece a segunda imagem
+      transicao.onended = () => {
+        transicao.style.display = 'none';
+        segunda.classList.add('mostrar');
+
+        // Toca a música com fade-in
+        musica.play().then(() => {
+          musica.volume = 0;
+          let vol = 0;
+          const fadeIn = setInterval(() => {
+            if (vol < 0.4) {
+              vol += 0.02;
+              musica.volume = vol;
+            } else {
+              clearInterval(fadeIn);
+            }
+          }, 200);
+        }).catch((err) => {
+          console.log('Reprodução automática bloqueada:', err);
+        });
+      };
     });
   </script>
 </body>
