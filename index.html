@@ -51,17 +51,20 @@
       font-size: 18px;
       border: none;
       border-radius: 8px;
-      background-color: #ff4081;
+      background-color: rgba(255,64,129,0.9);
       color: #fff;
       cursor: pointer;
       z-index: 10;
+      display: none;
     }
+
     audio { display: none; }
   </style>
 </head>
 <body>
 
 <div class="container">
+  <!-- Primeira imagem -->
   <img id="primeira" src="primeira_pagina.jpg" alt="Envelope - primeira página">
 
   <!-- Vídeo de transição -->
@@ -73,11 +76,11 @@
   <!-- Segunda imagem -->
   <img id="segunda" src="segunda_pagina.jpg" alt="Convite - segunda página">
 
-  <!-- Botão para continuar -->
+  <!-- Botão para iniciar o vídeo -->
   <button id="btnContinuar">Continuar para o convite</button>
 </div>
 
-<!-- Áudio do vídeo (som separado) -->
+<!-- Áudio do vídeo -->
 <audio id="audioVideo">
   <source src="musica_fundo.mp3" type="audio/mpeg">
 </audio>
@@ -100,34 +103,37 @@ window.onload = () => {
   primeira.style.opacity = "1";
 };
 
-// Quando o usuário clicar na primeira imagem
+// Clique na primeira imagem → mostra botão
 primeira.addEventListener("click", () => {
-  primeira.style.opacity = "0";
-  transicao.classList.add("mostrar");
-  transicao.play();
-
-  // Mostra botão para ativar áudio
   btnContinuar.style.display = "block";
 });
 
-// Clique no botão “Continuar para o convite”
+// Clique no botão → toca vídeo + áudio
 btnContinuar.addEventListener("click", () => {
-  // Toca áudio da transição
+  // Esconde o botão
+  btnContinuar.style.display = "none";
+
+  // Oculta primeira imagem
+  primeira.style.opacity = "0";
+
+  // Mostra e toca o vídeo
+  transicao.classList.add("mostrar");
+  transicao.play();
+
+  // Toca o áudio do vídeo
   audioVideo.loop = false;
   audioVideo.currentTime = 0;
   audioVideo.play().catch(() => console.log("Áudio do vídeo bloqueado"));
-
-  // Esconde o botão
-  btnContinuar.style.display = "none";
 });
 
-// Quando o vídeo terminar
+// Quando o vídeo termina
 transicao.onended = () => {
+  // Esconde vídeo
   transicao.style.opacity = "0";
   transicao.style.pointerEvents = "none";
   transicao.style.zIndex = "-1";
 
-  // Para áudio da transição
+  // Para áudio do vídeo
   audioVideo.pause();
   audioVideo.currentTime = 0;
 
