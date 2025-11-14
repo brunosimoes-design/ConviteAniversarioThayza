@@ -42,7 +42,7 @@
     #transicao { z-index: 5; }
     .mostrar { opacity: 1 !important; pointer-events: auto !important; }
 
-    #btnContinuar, #btnAvancar {
+    #btnContinuar, #btnAvancar, #btnLista {
       position: absolute;
       bottom: 90px;
       left: 50%;
@@ -57,10 +57,8 @@
       z-index: 10;
       font-weight: bold;
       box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      display: none;
     }
-
-    #btnContinuar { display: none; }
-    #btnAvancar { display: none; }
 
     audio { display: none; }
   </style>
@@ -68,30 +66,26 @@
 <body>
 
 <div class="container">
-  <!-- Primeira imagem -->
   <img id="primeira" src="primeira_pagina.jpg" alt="Envelope - primeira página">
 
-  <!-- Vídeo de transição -->
   <video id="transicao" playsinline>
     <source src="transicao_com_audio.mp4" type="video/mp4">
     Seu navegador não suporta vídeo.
   </video>
 
-  <!-- Segunda imagem -->
   <img id="segunda" src="segunda_pagina.jpg" alt="Convite - segunda página">
 
-  <!-- Terceira imagem -->
   <img id="terceira" src="listadepresenca.jpg" alt="Lista de presença">
 
-  <!-- Botão iniciar vídeo -->
   <button id="btnContinuar">Abrir</button>
 
-  <!-- 🔵 Botão avançar da segunda imagem -->
   <button id="btnAvancar">Avançar</button>
+
+  <!-- 🔵 Novo botão para a terceira imagem -->
+  <button id="btnLista">Confirmar Presença</button>
 
 </div>
 
-<!-- Música da segunda página -->
 <audio id="musica" loop>
   <source src="musica.mp3" type="audio/mpeg">
 </audio>
@@ -103,6 +97,7 @@ const terceira = document.getElementById("terceira");
 const transicao = document.getElementById("transicao");
 const btnContinuar = document.getElementById("btnContinuar");
 const btnAvancar = document.getElementById("btnAvancar");
+const btnLista = document.getElementById("btnLista");
 const musica = document.getElementById("musica");
 
 window.onload = () => {
@@ -127,7 +122,6 @@ transicao.onended = () => {
 
   segunda.classList.add("mostrar");
 
-  // 🔵 Mostra botão "Avançar"
   btnAvancar.style.display = "block";
 
   musica.volume = 0;
@@ -144,12 +138,18 @@ transicao.onended = () => {
   }).catch(err => console.log("Reprodução automática bloqueada:", err));
 };
 
-// 🔵 Clique para ir à lista de presença
 btnAvancar.addEventListener("click", () => {
   btnAvancar.style.display = "none";
   segunda.style.opacity = "0";
 
   terceira.classList.add("mostrar");
+
+  // 🔵 Mostrar botão da lista
+  btnLista.style.display = "block";
+});
+
+btnLista.addEventListener("click", () => {
+  window.open("https://www.listapresenca.com.br/?d=MjQyNDZfMjgzMTA=", "_blank");
 });
 </script>
 
