@@ -42,36 +42,17 @@
     #transicao { z-index: 5; }
     .mostrar { opacity: 1 !important; pointer-events: auto !important; }
 
-    /* BOTÃO CONTINUAR */
+    /* BOTÃO AJUSTADO */
     #btnContinuar {
       position: absolute;
-      bottom: 220px;
+      bottom: 220px; /* ⬆ mais acima, perto da legenda */ 
       left: 50%;
       transform: translateX(-50%);
       padding: 14px 28px;
       font-size: 20px;
       border: none;
       border-radius: 10px;
-      background-color: #007BFF;
-      color: #fff;
-      cursor: pointer;
-      z-index: 10;
-      display: none;
-      font-weight: bold;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-    }
-
-    /* BOTÃO AVANÇAR – ADICIONADO */
-    #btnAvancar {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 14px 28px;
-      font-size: 20px;
-      border: none;
-      border-radius: 10px;
-      background-color: #007BFF;
+      background-color: #007BFF; /* azul */
       color: #fff;
       cursor: pointer;
       z-index: 10;
@@ -89,7 +70,7 @@
   <!-- Primeira imagem -->
   <img id="primeira" src="primeira_pagina.jpg" alt="Envelope - primeira página">
 
-  <!-- Vídeo de transição -->
+  <!-- Vídeo de transição (COM ÁUDIO EMBUTIDO) -->
   <video id="transicao" playsinline>
     <source src="transicao_com_audio.mp4" type="video/mp4">
     Seu navegador não suporta vídeo.
@@ -100,9 +81,6 @@
 
   <!-- Botão para iniciar o vídeo -->
   <button id="btnContinuar">Continuar para o convite</button>
-
-  <!-- BOTÃO AVANÇAR (NOVO) -->
-  <button id="btnAvancar">Avançar</button>
 </div>
 
 <!-- Música da segunda página -->
@@ -115,7 +93,6 @@ const primeira = document.getElementById("primeira");
 const segunda = document.getElementById("segunda");
 const transicao = document.getElementById("transicao");
 const btnContinuar = document.getElementById("btnContinuar");
-const btnAvancar = document.getElementById("btnAvancar");
 const musica = document.getElementById("musica");
 
 // Fade-in da primeira imagem
@@ -144,9 +121,6 @@ transicao.onended = () => {
 
   segunda.classList.add("mostrar");
 
-  // MOSTRAR BOTÃO AVANÇAR AQUI
-  btnAvancar.style.display = "block";
-
   // Toca música da segunda página com fade-in suave
   musica.volume = 0;
   musica.play().then(() => {
@@ -161,11 +135,6 @@ transicao.onended = () => {
     }, 200);
   }).catch(err => console.log("Reprodução automática bloqueada:", err));
 };
-
-// BOTÃO AVANÇAR → ABRE LISTA DE PRESENÇA
-btnAvancar.addEventListener("click", () => {
-  window.location.href = "listadepresenca.pdf";
-});
 </script>
 
 </body>
