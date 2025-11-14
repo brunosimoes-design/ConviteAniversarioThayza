@@ -29,7 +29,7 @@
       border-radius: 8px;
       object-fit: cover;
     }
-    #segunda, #transicao {
+    #segunda, #transicao, #terceira {
       position: absolute;
       top: 0;
       left: 0;
@@ -42,24 +42,25 @@
     #transicao { z-index: 5; }
     .mostrar { opacity: 1 !important; pointer-events: auto !important; }
 
-    /* BOTÃO AJUSTADO */
-    #btnContinuar {
+    #btnContinuar, #btnAvancar {
       position: absolute;
-      bottom: 220px; /* ⬆ mais acima, perto da legenda */ 
+      bottom: 190px;
       left: 50%;
       transform: translateX(-50%);
       padding: 14px 28px;
       font-size: 20px;
       border: none;
       border-radius: 10px;
-      background-color: #007BFF; /* azul */
+      background-color: #007BFF;
       color: #fff;
       cursor: pointer;
       z-index: 10;
-      display: none;
       font-weight: bold;
       box-shadow: 0 4px 10px rgba(0,0,0,0.4);
     }
+
+    #btnContinuar { display: none; }
+    #btnAvancar { display: none; }
 
     audio { display: none; }
   </style>
@@ -70,7 +71,7 @@
   <!-- Primeira imagem -->
   <img id="primeira" src="primeira_pagina.jpg" alt="Envelope - primeira página">
 
-  <!-- Vídeo de transição (COM ÁUDIO EMBUTIDO) -->
+  <!-- Vídeo de transição -->
   <video id="transicao" playsinline>
     <source src="transicao_com_audio.mp4" type="video/mp4">
     Seu navegador não suporta vídeo.
@@ -79,8 +80,15 @@
   <!-- Segunda imagem -->
   <img id="segunda" src="segunda_pagina.jpg" alt="Convite - segunda página">
 
-  <!-- Botão para iniciar o vídeo -->
-  <button id="btnContinuar">Continuar para o convite</button>
+  <!-- Terceira imagem -->
+  <img id="terceira" src="listadepresenca.jpg" alt="Lista de presença">
+
+  <!-- Botão iniciar vídeo -->
+  <button id="btnContinuar">Abrir</button>
+
+  <!-- 🔵 Botão avançar da segunda imagem -->
+  <button id="btnAvancar">Avançar</button>
+
 </div>
 
 <!-- Música da segunda página -->
@@ -91,21 +99,20 @@
 <script>
 const primeira = document.getElementById("primeira");
 const segunda = document.getElementById("segunda");
+const terceira = document.getElementById("terceira");
 const transicao = document.getElementById("transicao");
 const btnContinuar = document.getElementById("btnContinuar");
+const btnAvancar = document.getElementById("btnAvancar");
 const musica = document.getElementById("musica");
 
-// Fade-in da primeira imagem
 window.onload = () => {
   primeira.style.opacity = "1";
 };
 
-// Clique na primeira imagem → mostra botão
 primeira.addEventListener("click", () => {
   btnContinuar.style.display = "block";
 });
 
-// Clique no botão → inicia vídeo
 btnContinuar.addEventListener("click", () => {
   btnContinuar.style.display = "none";
   primeira.style.opacity = "0";
@@ -113,7 +120,6 @@ btnContinuar.addEventListener("click", () => {
   transicao.play();
 });
 
-// Quando o vídeo termina
 transicao.onended = () => {
   transicao.style.opacity = "0";
   transicao.style.pointerEvents = "none";
@@ -121,7 +127,9 @@ transicao.onended = () => {
 
   segunda.classList.add("mostrar");
 
-  // Toca música da segunda página com fade-in suave
+  // 🔵 Mostra botão "Avançar"
+  btnAvancar.style.display = "block";
+
   musica.volume = 0;
   musica.play().then(() => {
     let vol = 0;
@@ -135,6 +143,14 @@ transicao.onended = () => {
     }, 200);
   }).catch(err => console.log("Reprodução automática bloqueada:", err));
 };
+
+// 🔵 Clique para ir à lista de presença
+btnAvancar.addEventListener("click", () => {
+  btnAvancar.style.display = "none";
+  segunda.style.opacity = "0";
+
+  terceira.classList.add("mostrar");
+});
 </script>
 
 </body>
