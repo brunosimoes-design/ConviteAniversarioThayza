@@ -42,20 +42,42 @@
     #transicao { z-index: 5; }
     .mostrar { opacity: 1 !important; pointer-events: auto !important; }
 
+    /* BOTÃO 1: CONTINUAR */
     #btnContinuar {
       position: absolute;
-      bottom: 220px; /* mais acima */
+      bottom: 220px;
       left: 50%;
       transform: translateX(-50%);
-      padding: 12px 24px;
-      font-size: 18px;
+      padding: 14px 28px;
+      font-size: 20px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       background-color: #007BFF;
       color: #fff;
       cursor: pointer;
       z-index: 10;
       display: none;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+
+    /* BOTÃO 2: AVANÇAR */
+    #btnAvancar {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 14px 28px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #007BFF;
+      color: #fff;
+      cursor: pointer;
+      z-index: 10;
+      display: none;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
     }
 
     audio { display: none; }
@@ -67,8 +89,8 @@
   <!-- Primeira imagem -->
   <img id="primeira" src="primeira_pagina.jpg" alt="Envelope - primeira página">
 
-  <!-- Vídeo de transição com áudio incluído -->
-  <video id="transicao" playsinline>
+  <!-- Vídeo de transição (muted obrigatório no celular) -->
+  <video id="transicao" muted autoplay playsinline>
     <source src="transicao_com_audio.mp4" type="video/mp4">
     Seu navegador não suporta vídeo.
   </video>
@@ -77,7 +99,10 @@
   <img id="segunda" src="segunda_pagina.jpg" alt="Convite - segunda página">
 
   <!-- Botão para iniciar o vídeo -->
-  <button id="btnContinuar">Abrir</button>
+  <button id="btnContinuar">Continuar para o convite</button>
+
+  <!-- Botão novo: avançar para a lista de presença -->
+  <button id="btnAvancar">Avançar</button>
 </div>
 
 <!-- Música da segunda página -->
@@ -90,6 +115,7 @@ const primeira = document.getElementById("primeira");
 const segunda = document.getElementById("segunda");
 const transicao = document.getElementById("transicao");
 const btnContinuar = document.getElementById("btnContinuar");
+const btnAvancar = document.getElementById("btnAvancar");
 const musica = document.getElementById("musica");
 
 // Fade-in da primeira imagem
@@ -102,25 +128,29 @@ primeira.addEventListener("click", () => {
   btnContinuar.style.display = "block";
 });
 
-// Clique no botão → inicia vídeo
+// Clique no botão → inicia vídeo com áudio
 btnContinuar.addEventListener("click", () => {
   btnContinuar.style.display = "none";
   primeira.style.opacity = "0";
+
+  transicao.muted = false;
+
   transicao.classList.add("mostrar");
   transicao.play();
 });
 
 // Quando o vídeo termina
 transicao.onended = () => {
-  // Esconde vídeo
   transicao.style.opacity = "0";
   transicao.style.pointerEvents = "none";
   transicao.style.zIndex = "-1";
 
-  // Mostra segunda imagem
   segunda.classList.add("mostrar");
 
-  // Toca música da segunda página com fade-in
+  // Mostra botão AVANÇAR assim que a segunda imagem aparece
+  btnAvancar.style.display = "block";
+
+  // Música da segunda página (fade-in)
   musica.volume = 0;
   musica.play().then(() => {
     let vol = 0;
@@ -132,8 +162,13 @@ transicao.onended = () => {
         clearInterval(fadeIn);
       }
     }, 200);
-  }).catch(err => console.log("Reprodução automática bloqueada:", err));
+  });
 };
+
+// Clique no botão avançar → abre lista de presença
+btnAvancar.addEventListener("click", () => {
+  window.location.href = "listadepresenca.pdf";
+});
 </script>
 
 </body>
