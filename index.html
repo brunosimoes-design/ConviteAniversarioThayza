@@ -42,7 +42,7 @@
     #transicao { z-index: 5; }
     .mostrar { opacity: 1 !important; pointer-events: auto !important; }
 
-    /* BOTÃO 1: CONTINUAR */
+    /* BOTÃO CONTINUAR */
     #btnContinuar {
       position: absolute;
       bottom: 220px;
@@ -61,7 +61,7 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.4);
     }
 
-    /* BOTÃO 2: AVANÇAR */
+    /* BOTÃO AVANÇAR – ADICIONADO */
     #btnAvancar {
       position: absolute;
       bottom: 40px;
@@ -89,8 +89,8 @@
   <!-- Primeira imagem -->
   <img id="primeira" src="primeira_pagina.jpg" alt="Envelope - primeira página">
 
-  <!-- Vídeo de transição (muted obrigatório no celular) -->
-  <video id="transicao" muted autoplay playsinline>
+  <!-- Vídeo de transição -->
+  <video id="transicao" playsinline>
     <source src="transicao_com_audio.mp4" type="video/mp4">
     Seu navegador não suporta vídeo.
   </video>
@@ -101,7 +101,7 @@
   <!-- Botão para iniciar o vídeo -->
   <button id="btnContinuar">Continuar para o convite</button>
 
-  <!-- Botão novo: avançar para a lista de presença -->
+  <!-- BOTÃO AVANÇAR (NOVO) -->
   <button id="btnAvancar">Avançar</button>
 </div>
 
@@ -128,13 +128,10 @@ primeira.addEventListener("click", () => {
   btnContinuar.style.display = "block";
 });
 
-// Clique no botão → inicia vídeo com áudio
+// Clique no botão → inicia vídeo
 btnContinuar.addEventListener("click", () => {
   btnContinuar.style.display = "none";
   primeira.style.opacity = "0";
-
-  transicao.muted = false;
-
   transicao.classList.add("mostrar");
   transicao.play();
 });
@@ -147,10 +144,10 @@ transicao.onended = () => {
 
   segunda.classList.add("mostrar");
 
-  // Mostra botão AVANÇAR assim que a segunda imagem aparece
+  // MOSTRAR BOTÃO AVANÇAR AQUI
   btnAvancar.style.display = "block";
 
-  // Música da segunda página (fade-in)
+  // Toca música da segunda página com fade-in suave
   musica.volume = 0;
   musica.play().then(() => {
     let vol = 0;
@@ -162,10 +159,10 @@ transicao.onended = () => {
         clearInterval(fadeIn);
       }
     }, 200);
-  });
+  }).catch(err => console.log("Reprodução automática bloqueada:", err));
 };
 
-// Clique no botão avançar → abre lista de presença
+// BOTÃO AVANÇAR → ABRE LISTA DE PRESENÇA
 btnAvancar.addEventListener("click", () => {
   window.location.href = "listadepresenca.pdf";
 });
